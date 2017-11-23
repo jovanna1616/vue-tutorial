@@ -2,19 +2,20 @@
 	<div class="users">
 		<h1>Todos:</h1>
 		<form v-on:submit="addTodo">
-			<input type="text" v-model="newTodo.title" placeholder="Enter new todo">
+			<input type="text" v-model.trim="newTodo.title" placeholder="Enter new todo">
 			<br>
 			<input type="submit" value="Submit">
 		</form>
 		<ul>
-				<li v-for="todo in todos">
-					<input type="checkbox" class="toggle" v-model="todo.completed">
-					<span :class="{completed: todo.completed}">
-						{{ todo.title }}
-						<button v-on:click="deleteTodo(todo)">X</button>
-						<button v-on:click="editTodo(todo)">edit</button>
-				  </span>
-				</li>
+			<li v-for="todo in todos">
+				<input type="checkbox" v-model="todo.completed">
+				<span :class="{completed: todo.completed}" v-on:click="clicked" v-show="!inEditMode">
+					{{ todo.title }}
+					<br>
+					<button v-on:click="deleteTodo(todo)">X</button>
+			  </span>
+			  <input v-on:keyup.enter="saved" v-model="todo.title" v-show="inEditMode">
+			</li>
 		</ul>
 	</div>
 </template>
@@ -24,8 +25,9 @@
 	  name: 'todos',
 	  data () {
 		  return {
+		  	inEditMode: false,
 		  	newTodo: {},
-		  	todos: []
+		  	todos: [],
 		  }
 	  },
 	  methods: {
@@ -39,12 +41,17 @@
 	  	deleteTodo: function(todo){
 	  		this.todos.splice(this.todos.indexOf(todo), 1);
 	  	},
-	  	editTodo: function(){}
+	  	clicked: function(){
+	  		this.inEditMode = true;
+	  	},
+	  	saved: function(){
+	  		this.inEditMode = false;
+	  	}
 	  },
 	  created: function(){
 	  	this.$http.get('https://jsonplaceholder.typicode.com/todos')
 	  	.then(function(response){
-	  		// console.log(response.data);
+	  		console.log(response.data);
 	  		this.todos = response.data;
 	  	});
 	  }
@@ -55,4 +62,5 @@
 	.completed {
 		text-decoration: line-through;
 	}
+	ul li {list-style-type: none}
 </style>
