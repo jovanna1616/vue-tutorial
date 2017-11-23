@@ -9,12 +9,12 @@
 			<input type="submit" value="Submit">
 		</form>
 		<ul>
-				<li v-for="user in users">
-					<input type="checkbox" class="toggle" v-model="user.contacted">
-					<span :class="{contacted: user.contacted}">
-						{{ user.name }}: {{ user.email }} <button v-on:click="deleteUser(user)">X</button>
-				  </span>
-				</li>
+			<li v-for="user in users">
+				<input type="checkbox" class="toggle" v-model="user.contacted">
+				<span :class="{contacted: user.contacted}">
+					{{ user.name }}: {{ user.email }} <button v-on:click="deleteUser(user)">X</button>
+			  </span>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -23,7 +23,7 @@
 	export default {
 	  name: 'users',
 	  data () {
-		  return {
+		    return {
 		  	newUser: {},
 		  	users: [
 		  		{

@@ -26,7 +26,7 @@
 	export default {
 	  name: 'test',
 	  props: {
-	  	msg: {
+	  	  msg: {
 	  		type: String,
 	  		default: 'Foobar'
 	  	}
