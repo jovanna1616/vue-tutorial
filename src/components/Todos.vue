@@ -8,13 +8,32 @@
 		</form>
 		<ul>
 			<li v-for="todo in todos">
+
+
+
 				<input type="checkbox" v-model="todo.completed">
+				<!-- show on page load -->
 				<span :class="{completed: todo.completed}" v-on:click="clicked" v-show="!inEditMode">
 					{{ todo.title }}
-					<br>
-					<button v-on:click="deleteTodo(todo)">X</button>
 			  </span>
+
+			  <!-- show if editing todo -->
 			  <input v-on:keyup.enter="saved" v-model="todo.title" v-show="inEditMode">
+
+			  <button v-on:click="deleteTodo(todo)">X</button>
+
+
+			  <select v-model="priority">
+      			<option v-for="option in options" v-bind:value="option.value">
+        			{{ option.text }}
+      			</option>
+  			</select>
+  			<span>Priority: {{ priority }}</span>
+  			<br>
+
+			  
+
+			  
 			</li>
 		</ul>
 	</div>
@@ -28,7 +47,15 @@
 		  	inEditMode: false,
 		  	newTodo: {},
 		  	todos: [],
-		  }
+		  	priority: '',
+	      options: [
+	        { text: '1', value: 'Top priority' },
+	        { text: '2', value: 'Priority level 2' },
+	        { text: '3', value: 'Priority level 3' },
+	        { text: '4', value: 'Priority level 4' },
+	        { text: '5', value: 'Priority level 5' }
+	      ]
+	  	}
 	  },
 	  methods: {
 	  	addTodo: function(e){

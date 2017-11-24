@@ -9,12 +9,13 @@
       </option>
     </select>
     <span>Selected: {{ selected }}</span>
-
-
   </div>
 </template>
 
 <script>
+import Person from './../models/person'
+import Doctor from './../models/doctor'
+import Patient from './../models/patient'
 export default {
   name: 'HelloWorld',
   data () {
@@ -29,6 +30,15 @@ export default {
     }
   }
 }
+
+
+let doctor = new Doctor('John', 'Doe');
+let patient = new Patient('Joan', 'Doe', doctor);
+console.log(doctor);
+console.log(patient);
+console.log(doctor instanceof Person);
+console.log(patient instanceof Person);
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
