@@ -10,11 +10,11 @@
 			<li v-for="todo in reverseTodos">
 				<input type="checkbox" v-model="todo.completed">
 				<!-- show todo on page load -->
-				<span :class="{completed: todo.completed}" v-on:click="clicked" v-show="!inEditMode">
+				<span :class="{completed: todo.completed}" v-show="!inEditMode">
 					{{ todo.title }}
 			  </span>
 			  <!-- show input only if editing todo -->
-			  <input v-on:keyup.enter="saved" v-model="todo.title" v-show="inEditMode">
+			  <input v-on:keyup.enter="saved(todo)" v-model="todo.title" v-show="inEditMode">
 			  <br>
 			  <select v-model="todo.priority">
       			<option v-for="option in options" v-bind:value="option.value">
@@ -23,6 +23,7 @@
   			</select>
   			<span>Priority: {{ todo.priority }}</span>
   			<button v-on:click="deleteTodo(todo)">delete</button>
+  			<button v-on:click="editTodo(todo)">edit</button>
   			<br>
 			</li>
 		</ul>
@@ -63,11 +64,15 @@
 	  		this.$http.delete('http://localhost:8000/api/todos/' + todo.id);
 	  		this.todos.splice(this.todos.indexOf(todo), 1);
 	  	},
-	  	clicked: function(){
-	  		this.inEditMode = true;
-	  	},
-	  	saved: function(){
+	  	saved: function(todo){
+	  		this.$http.put('http://localhost:8000/api/todos/' + todo.id, {
+	  			title: todo.title,
+	  			completed: 0
+	  		});
 	  		this.inEditMode = false;
+	  	},
+	  	editTodo: function(todo){
+	  		this.inEditMode = true;
 	  	}
 	  },
 	  created: function(){
