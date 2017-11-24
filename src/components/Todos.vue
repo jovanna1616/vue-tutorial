@@ -7,33 +7,23 @@
 			<input type="submit" value="Submit">
 		</form>
 		<ul>
-			<li v-for="todo in todos">
-
-
-
+			<li v-for="todo in reverseTodos">
 				<input type="checkbox" v-model="todo.completed">
-				<!-- show on page load -->
+				<!-- show todo on page load -->
 				<span :class="{completed: todo.completed}" v-on:click="clicked" v-show="!inEditMode">
 					{{ todo.title }}
 			  </span>
-
-			  <!-- show if editing todo -->
+			  <!-- show input only if editing todo -->
 			  <input v-on:keyup.enter="saved" v-model="todo.title" v-show="inEditMode">
-
-			  <button v-on:click="deleteTodo(todo)">X</button>
-
-
-			  <select v-model="priority">
+			  <br>
+			  <select v-model="todo.priority">
       			<option v-for="option in options" v-bind:value="option.value">
         			{{ option.text }}
       			</option>
   			</select>
-  			<span>Priority: {{ priority }}</span>
+  			<span>Priority: {{ todo.priority }}</span>
+  			<button v-on:click="deleteTodo(todo)">delete</button>
   			<br>
-
-			  
-
-			  
 			</li>
 		</ul>
 	</div>
@@ -81,7 +71,12 @@
 	  		console.log(response.data);
 	  		this.todos = response.data;
 	  	});
-	  }
+	  },
+	  computed: {
+    	reverseTodos() {
+      	return this.todos.slice().reverse();
+      }    	
+    }
 	}
 </script>
 
@@ -90,4 +85,5 @@
 		text-decoration: line-through;
 	}
 	ul li {list-style-type: none}
+	button {margin-left: 50px;}
 </style>
