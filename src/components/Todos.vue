@@ -49,6 +49,10 @@
 	  },
 	  methods: {
 	  	addTodo: function(e){
+	  		this.$http.post('http://localhost:8000/api/todos', {
+	  			title: this.newTodo.title,
+	  			completed: false
+	  		});
 	  		this.todos.push({
 	  			title: this.newTodo.title,
 	  			completed: false
@@ -56,6 +60,7 @@
 	  		e.preventDefault();
 	  	},
 	  	deleteTodo: function(todo){
+	  		this.$http.delete('http://localhost:8000/api/todos/' + todo.id);
 	  		this.todos.splice(this.todos.indexOf(todo), 1);
 	  	},
 	  	clicked: function(){
@@ -66,11 +71,12 @@
 	  	}
 	  },
 	  created: function(){
-	  	this.$http.get('https://jsonplaceholder.typicode.com/todos')
+	  	this.$http.get('http://localhost:8000/api/todos')
 	  	.then(function(response){
-	  		console.log(response.data);
 	  		this.todos = response.data;
-	  	});
+	  	}).catch(function (error) {
+        console.log(error);
+    	});
 	  },
 	  computed: {
     	reverseTodos() {

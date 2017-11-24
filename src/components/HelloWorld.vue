@@ -34,10 +34,10 @@ export default {
 
 let doctor = new Doctor('John', 'Doe');
 let patient = new Patient('Joan', 'Doe', doctor);
-console.log(doctor);
-console.log(patient);
-console.log(doctor instanceof Person);
-console.log(patient instanceof Person);
+// console.log(doctor);
+// console.log(patient);
+// console.log(doctor instanceof Person);
+// console.log(patient instanceof Person);
 
 </script>
 
