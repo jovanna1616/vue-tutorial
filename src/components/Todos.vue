@@ -3,6 +3,11 @@
 		<h1>Todos:</h1>
 		<form v-on:submit="addTodo">
 			<input type="text" v-model.trim="newTodo.title" placeholder="Enter new todo">
+			<select v-model="newTodo.priority">
+  			<option v-for="option in options" v-bind:value="option.value">
+    			{{ option.text }}
+  			</option>
+			</select>
 			<br>
 			<input type="submit" value="Submit">
 		</form>
@@ -16,11 +21,11 @@
 			  <!-- show input only if editing todo -->
 			  <input v-on:keyup.enter="saved(todo)" v-model="todo.title" v-show="inEditMode">
 			  <br>
-			  <select v-model="todo.priority">
+			  <!-- <select v-model="todo.priority">
       			<option v-for="option in options" v-bind:value="option.value">
         			{{ option.text }}
       			</option>
-  			</select>
+  			</select> -->
   			<span>Priority: {{ todo.priority }}</span>
   			<button v-on:click="deleteTodo(todo)">delete</button>
   			<button v-on:click="editTodo(todo)">edit</button>
@@ -52,11 +57,13 @@
 	  	addTodo: function(e){
 	  		this.$http.post('http://localhost:8000/api/todos', {
 	  			title: this.newTodo.title,
-	  			completed: false
+	  			completed: false,
+	  			priority: this.newTodo.priority
 	  		});
 	  		this.todos.push({
 	  			title: this.newTodo.title,
-	  			completed: false
+	  			completed: false,
+	  			priority: this.newTodo.priority
 	  		});
 	  		e.preventDefault();
 	  	},
