@@ -14,11 +14,10 @@ new Vue({
    `
 	<div id="app">
 		<ul>
-			<li><router-link to="/">Home</router-link></li>
+			<li><router-link to="/">HelloWorld</router-link></li>
 			<li><router-link to="/test">Test page</router-link></li>
 			<li><router-link to="/users">Users</router-link></li>
 			<li><router-link to="/todos">Todos</router-link></li>
-
 			<router-view></router-view>
 		</ul>
 	</div>

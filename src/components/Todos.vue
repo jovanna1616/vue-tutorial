@@ -1,9 +1,10 @@
 <template>
-	<div class="users">
+	<div>
 		<h1>Todos:</h1>
 		<form v-on:submit="addTodo">
-			<input type="text" v-model.trim="newTodo.title" placeholder="Enter new todo">
-			<select v-model="newTodo.priority">
+			<input type="text" v-model.trim="newTodo.title" placeholder="Enter new todo" required>
+			<small>set priority level:</small>
+			<select v-model="newTodo.priority" required>
   			<option v-for="option in options" v-bind:value="option.value">
     			{{ option.text }}
   			</option>
@@ -16,20 +17,22 @@
 				<input type="checkbox" v-model="todo.completed">
 				<!-- show todo on page load -->
 				<span :class="{completed: todo.completed}" v-show="!inEditMode">
-					{{ todo.title }}
+					<a v-bind:href="'/todos/'+ todo.id">{{ todo.title }}</a>
 			  </span>
 			  <!-- show input only if editing todo -->
-			  <input v-on:keyup.enter="saved(todo)" v-model="todo.title" v-show="inEditMode">
+			  <input v-model="todo.title" v-show="inEditMode">
 			  <br>
-			  <!-- <select v-model="todo.priority">
-      			<option v-for="option in options" v-bind:value="option.value">
-        			{{ option.text }}
-      			</option>
-  			</select> -->
+			  <select v-model="todo.priority" v-show="inEditMode">
+    			<option v-for="option in options" v-bind:value="option.value">
+      			{{ option.text }}
+    			</option>
+  			</select>
   			<span>Priority: {{ todo.priority }}</span>
   			<button v-on:click="deleteTodo(todo)">delete</button>
-  			<button v-on:click="editTodo(todo)">edit</button>
+  			<button v-on:click="editTodo(todo)" v-show="!inEditMode">edit</button>
+  			<button v-on:click="saveEditedTodo(todo)" v-show="inEditMode">save</button>
   			<br>
+  			<hr>
 			</li>
 		</ul>
 	</div>
@@ -42,6 +45,7 @@
 		  return {
 		  	inEditMode: false,
 		  	newTodo: {},
+	  		editedTodo: {}, 
 		  	todos: [],
 		  	priority: '',
 	      options: [
@@ -50,7 +54,8 @@
 	        { text: '3', value: 'Priority level 3' },
 	        { text: '4', value: 'Priority level 4' },
 	        { text: '5', value: 'Priority level 5' }
-	      ]
+	      ],
+	      props: ['todo']
 	  	}
 	  },
 	  methods: {
@@ -59,22 +64,28 @@
 	  			title: this.newTodo.title,
 	  			completed: false,
 	  			priority: this.newTodo.priority
-	  		});
+	  		}).then(function(response){
+	  		this.newTodo.id = response.data.id;
 	  		this.todos.push({
+	  			id: this.newTodo.id,
 	  			title: this.newTodo.title,
 	  			completed: false,
 	  			priority: this.newTodo.priority
 	  		});
+	  	}).catch(function (error) {
+        console.log(error);
+    	});
 	  		e.preventDefault();
 	  	},
 	  	deleteTodo: function(todo){
 	  		this.$http.delete('http://localhost:8000/api/todos/' + todo.id);
 	  		this.todos.splice(this.todos.indexOf(todo), 1);
 	  	},
-	  	saved: function(todo){
+	  	saveEditedTodo: function(todo){
 	  		this.$http.put('http://localhost:8000/api/todos/' + todo.id, {
 	  			title: todo.title,
-	  			completed: 0
+	  			completed: 0,
+	  			priority: todo.priority
 	  		});
 	  		this.inEditMode = false;
 	  	},

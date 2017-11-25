@@ -16,6 +16,6 @@ export default new Router({
 		{path: '/', component: HelloWorld},
 		{path: '/test', component: Test},
 		{path: '/users', component: Users},
-		{path: '/todos', component: Todos}
+		{path: '/todos', component: Todos, props: true}
 	]
 })
