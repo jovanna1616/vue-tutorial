@@ -40,7 +40,7 @@
 </template>
 
 <script>
-	import { TodoService } from '../service/todo-service'
+	import { TodoService } from '../service/todo-service';
 	export default {
 	  name: 'todos',
 	  data () {
@@ -50,19 +50,21 @@
 	  		editedTodo: {}, 
 		  	todos: [],
 		  	priority: '',
-	      options: [
+   	    options: [
 	        { text: 'Top priority', value: '1' },
 	        { text: 'Priority level 2', value: '2' },
 	        { text: 'Priority level 3', value: '3' },
 	        { text: 'Priority level 4', value: '4' },
 	        { text: 'Priority level 5', value: '5' }
 	      ],
+	      restResourceService: new TodoService()
 	  	}
 	  },
 	  methods: {
 	  	fetchAllTodos(){
-	  		this.restResourceService = new TodoService();
+	  		// this.restResourceService = new TodoService();
 	  		return this.restResourceService.getAllTodos()
+	  		// return this.$http.get('http://localhost:8000/api/todos')
 	  		.then(function(response){
   				this.todos = response.data;
   			}).catch(function (error) {
@@ -80,7 +82,7 @@
 	  	}
 	  },
 	  created: function() {
-	  	this.restResourceService = new TodoService();
+	  	// this.restResourceService = new TodoService();
 	  	this.fetchAllTodos();
 	  },
 	  computed: {

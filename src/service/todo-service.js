@@ -1,9 +1,11 @@
 import Vue from 'vue'
+// import axios from 'axios';
 
 export class TodoService {
 	getAllTodos(){
-  	Vue.http.get('http://localhost:8000/api/todos');
-  }
+  		Vue.http.get('http://localhost:8000/api/todos');
+  		// axios.get('http://localhost:8000/api/todos');
+  	}
 	addTodo(){
 		this.$http.post('http://localhost:8000/api/todos', {
 			title: this.newTodo.title,
@@ -37,4 +39,3 @@ export class TodoService {
 		this.inEditMode = true;
 	}
 }
-
