@@ -17,7 +17,8 @@
 				<input type="checkbox" v-model="todo.completed">
 				<!-- show todo on page load -->
 				<span :class="{completed: todo.completed}" v-show="!inEditMode">
-					<a v-bind:href="'/todos/'+ todo.id">{{ todo.title }}</a>
+				{{ todo.title }}
+					<!-- <a v-bind:href="'/todos/'+ todo.id">{{ todo.title }}</a> -->
 			  </span>
 			  <!-- show input only if editing todo -->
 			  <input v-model="todo.title" v-show="inEditMode">
@@ -84,7 +85,7 @@
 	  	saveEditedTodo: function(todo){
 	  		this.$http.put('http://localhost:8000/api/todos/' + todo.id, {
 	  			title: todo.title,
-	  			completed: 0,
+	  			completed: todo.completed,
 	  			priority: todo.priority
 	  		});
 	  		this.inEditMode = false;
