@@ -14,7 +14,7 @@
 		</form>
 		<ul>
 			<li v-for="todo in reverseTodos">
-				<input type="checkbox" v-model="todo.completed">
+				<input type="checkbox" v-model="todo.completed" v-show="inEditMode">
 				<!-- show todo on page load -->
 				<span :class="{completed: todo.completed}" v-show="!inEditMode">
 				{{ todo.title }}
