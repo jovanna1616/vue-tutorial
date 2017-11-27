@@ -26,9 +26,9 @@
 	export default {
 	  name: 'test',
 	  props: {
-	  	  msg: {
-	  		type: String,
-	  		default: 'Foobar'
+  	  msg: {
+  		type: String,
+  		default: 'Foobar'
 	  	}
 	  },
 	  data () {

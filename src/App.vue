@@ -19,7 +19,7 @@ export default {
   components: {
     Test,
     Users,
-    Todos
+    Todos,
   }
 }
 </script>

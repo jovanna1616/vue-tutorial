@@ -40,7 +40,7 @@
 </template>
 
 <script>
-// import service
+	import { TodoService } from '../service/todo-service'
 	export default {
 	  name: 'todos',
 	  data () {
@@ -57,50 +57,31 @@
 	        { text: 'Priority level 4', value: '4' },
 	        { text: 'Priority level 5', value: '5' }
 	      ],
-	      props: ['todo']
 	  	}
 	  },
 	  methods: {
-	  	addTodo: function(){
-	  		this.$http.post('http://localhost:8000/api/todos', {
-	  			title: this.newTodo.title,
-	  			completed: false,
-	  			priority: this.newTodo.priority
-	  		}).then(function(response){
-			  		this.newTodo.id = response.data.id;
-			  		this.todos.push({
-			  			id: this.newTodo.id,
-			  			title: this.newTodo.title,
-			  			completed: false,
-			  			priority: this.newTodo.priority
-		  			});
-			  	}).catch(function (error) {
-	        console.log(error);
-    		});
+	  	fetchAllTodos(){
+	  		this.restResourceService = new TodoService();
+	  		return this.restResourceService.getAllTodos()
+	  		.then(function(response){
+  				this.todos = response.data;
+  			}).catch(function (error) {
+      		console.log(error);
+  			})
 	  	},
-	  	deleteTodo: function(todo){
-	  		this.$http.delete('http://localhost:8000/api/todos/' + todo.id);
-	  		this.todos.splice(this.todos.indexOf(todo), 1);
+	  	deleteTodo(todo){
+	  		this.restResourceService.deleteTodo(todo)
 	  	},
-	  	saveEditedTodo: function(todo){
-	  		this.$http.put('http://localhost:8000/api/todos/' + todo.id, {
-	  			title: todo.title,
-	  			completed: todo.completed,
-	  			priority: todo.priority
-	  		});
-	  		this.inEditMode = false;
+	  	saveEditedTodo(todo){
+	  		this.restResourceService.saveEditedTodo(todo)
 	  	},
-	  	editTodo: function(todo){
-	  		this.inEditMode = true;
+	  	editTodo(todo){
+	  		this.restResourceService.editTodo(todo)
 	  	}
 	  },
-	  created: function(){
-	  	this.$http.get('http://localhost:8000/api/todos')
-	  	.then(function(response){
-	  		this.todos = response.data;
-	  	}).catch(function (error) {
-        console.log(error);
-    	});
+	  created: function() {
+	  	this.restResourceService = new TodoService();
+	  	this.fetchAllTodos();
 	  },
 	  computed: {
     	reverseTodos() {
