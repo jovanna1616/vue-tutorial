@@ -21,5 +21,12 @@ new Vue({
 			<router-view></router-view>
 		</ul>
 	</div>
-	`,
-}).$mount('#app')
+	`
+	// components: {
+	// 	App
+	// }
+})
+.$mount('#app')
+
+// shorthands
+// service

@@ -4,11 +4,15 @@
 
 
     <select v-model="selected">
-      <option v-for="option in options" v-bind:value="option.value">
+      <option v-for="option in options" :key="option.id" v-bind:value="option.value">
         {{ option.text }}
       </option>
     </select>
     <span>Selected: {{ selected }}</span>
+    <br>
+    <div v-for="(value, key, index) in object">
+      {{ index }}.{{ key }}: {{ value }}
+    </div>
   </div>
 </template>
 
@@ -26,9 +30,14 @@ export default {
         { text: 'Two', value: 'B' },
         { text: 'Three', value: 'C' }
       ],
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      object: {
+        firstName: 'John',
+        lastName: 'Doe',
+        age: 30
+      }
     }
-  }
+  },
 }
 
 
