@@ -46,7 +46,7 @@
 	  data () {
 		  return {
 		  	inEditMode: false,
-		  	newTodo: {},
+		  	newTodo: {title: '', priority: '', completed: false},
 	  		editedTodo: {}, 
 		  	todos: [],
 		  	priority: '',
@@ -57,32 +57,53 @@
 	        { text: 'Priority level 4', value: '4' },
 	        { text: 'Priority level 5', value: '5' }
 	      ],
-	      restResourceService: new TodoService()
 	  	}
 	  },
 	  methods: {
 	  	fetchAllTodos(){
-	  		// this.restResourceService = new TodoService();
 	  		return this.restResourceService.getAllTodos()
-	  		// return this.$http.get('http://localhost:8000/api/todos')
-	  		.then(function(response){
-  				this.todos = response.data;
-  			}).catch(function (error) {
+	  		.then((response) => {
+	  			console.log(response);
+  				this.todos = response.body;
+  			}).catch((error) => {
       		console.log(error);
   			})
 	  	},
+	  	addTodo() {
+	  		this.restResourceService.addTodo(this.newTodo)
+	  		.then((response) => {
+	  			this.newTodo.id = response.body.id,
+	  			this.todos.push({
+		  			id: this.newTodo.id,
+		  			title: this.newTodo.title,
+		  			priority: this.newTodo.priority
+					});
+	  		}).catch((error) => {
+	  				console.log(error);
+	  		});
+	  	},
 	  	deleteTodo(todo){
 	  		this.restResourceService.deleteTodo(todo)
+	  		.then((response) => {})
+	  		.catch((error) => {
+	  			console.log(error)
+	  		});
+	  		this.todos.splice(this.todos.indexOf(todo), 1);
 	  	},
 	  	saveEditedTodo(todo){
 	  		this.restResourceService.saveEditedTodo(todo)
+	  		.then((response) => {})
+	  		.catch((error) => {
+	  			console.log(error)
+	  		});
+	  		this.inEditMode = false;
 	  	},
 	  	editTodo(todo){
-	  		this.restResourceService.editTodo(todo)
+	  		this.inEditMode = true;
 	  	}
 	  },
 	  created: function() {
-	  	// this.restResourceService = new TodoService();
+	  	this.restResourceService = new TodoService();
 	  	this.fetchAllTodos();
 	  },
 	  computed: {
